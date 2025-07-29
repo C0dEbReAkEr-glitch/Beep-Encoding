@@ -1,0 +1,190 @@
+Beep Encoding System - Command Line Tool
+Installation
+1. Install Python Dependencies
+bashpip install numpy scipy sounddevice wave
+2. Save the Script
+Save the Python code as beep_encoder.py and make it executable:
+bashchmod +x beep_encoder.py
+Usage Examples
+Encoding Messages
+Morse Code
+bash# Encode "SOS" as Morse code and save to file
+python beep_encoder.py encode -t morse -m "SOS" -o sos_morse.wav
+
+# Encode with custom parameters and play
+python beep_encoder.py encode -t morse -m "HELLO WORLD" -f 1000 -d 0.15 -a 0.5 -o hello.wav -p
+DTMF (Phone Tones)
+bash# Encode phone number
+python beep_encoder.py encode -t dtmf -m "1234567890" -o phone.wav -p
+
+# Custom duration for DTMF tones
+python beep_encoder.py encode -t dtmf -m "911" -d 0.3 -o emergency.wav
+FSK (Frequency Shift Keying)
+bash# Encode text using FSK
+python beep_encoder.py encode -t fsk -m "TEST" -f 800 -d 0.1 -o fsk_test.wav
+ASK (Amplitude Shift Keying)
+bash# Encode with amplitude modulation
+python beep_encoder.py encode -t ask -m "DATA" -f 1200 -o ask_data.wav -p
+PSK (Phase Shift Keying)
+bash# Encode with phase shifts
+python beep_encoder.py encode -t psk -m "SIGNAL" -f 1000 -d 0.08 -o psk_signal.wav
+Manchester Encoding
+bash# Encode using Manchester encoding
+python beep_encoder.py encode -t manchester -m "BITS" -f 900 -o manchester.wav -p
+Decoding Audio Files
+Decode from File
+bash# Decode any supported encoding from file
+python beep_encoder.py decode -i encoded_message.wav -o decode_results.json
+
+# Decode with custom bit duration
+python beep_encoder.py decode -i fsk_message.wav -d 0.1 -o fsk_results.json
+Decode from Live Recording
+bash# Record for 10 seconds and decode
+python beep_encoder.py decode -r 10 -o live_decode.json
+
+# Record for 5 seconds and decode morse
+python beep_encoder.py decode -r 5 -o morse_live.json
+Signal Analysis
+Analyze Audio File
+bash# Detailed analysis of audio file
+python beep_encoder.py analyze -i mystery_signal.wav -o analysis_report.json
+
+# Analyze recorded audio
+python beep_encoder.py analyze -r 8 -o live_analysis.json
+Command Line Options
+Global Options
+
+-s, --sample-rate: Sample rate in Hz (default: 44100)
+-h, --help: Show help message
+
+Encoding Options
+
+-t, --type: Encoding type (morse, dtmf, fsk, ask, psk, manchester)
+-m, --message: Message to encode
+-f, --frequency: Base frequency in Hz (default: 800)
+-d, --duration: Bit/symbol duration in seconds (default: 0.1)
+-a, --amplitude: Signal amplitude 0.0-1.0 (default: 0.3)
+-o, --output: Output audio file (.wav)
+-p, --play: Play generated audio
+
+Decoding Options
+
+-i, --input: Input audio file (.wav)
+-r, --record: Record duration in seconds
+-d, --duration: Expected bit duration for digital modes
+-o, --output: Output results file (.json)
+
+Analysis Options
+
+-i, --input: Input audio file (.wav)
+-r, --record: Record duration in seconds
+-o, --output: Output analysis file (.json)
+
+Output Files
+Audio Files (.wav)
+
+Generated encoded signals
+16-bit mono WAV format
+Configurable sample rate
+
+Results Files (.json)
+Contains:
+
+Detected encoding type
+Decoded message
+Confidence score
+Signal analysis data
+Frequency information
+Timing analysis
+
+Info Files (*_info.json)
+Automatically generated with encoding operations:
+
+Encoding parameters used
+Original message
+Signal characteristics
+Timestamp
+
+Examples of Complete Workflows
+1. Create and Verify Morse Code
+bash# Encode message
+python beep_encoder.py encode -t morse -m "HELLO" -o hello_morse.wav -p
+
+# Analyze the generated signal
+python beep_encoder.py analyze -i hello_morse.wav -o morse_analysis.json
+
+# Decode it back
+python beep_encoder.py decode -i hello_morse.wav -o morse_decode.json
+2. Test DTMF System
+bash# Encode phone number
+python beep_encoder.py encode -t dtmf -m "5551234" -d 0.2 -o phone_number.wav
+
+# Verify encoding
+python beep_encoder.py decode -i phone_number.wav -o phone_decode.json
+3. Live Recording and Analysis
+bash# Record unknown signal for 10 seconds
+python beep_encoder.py analyze -r 10 -o unknown_signal.json
+
+# If analysis shows it's morse code, decode it
+python beep_encoder.py decode -r 10 -o morse_message.json
+4. Batch Processing
+bash# Create multiple test signals
+python beep_encoder.py encode -t morse -m "TEST1" -o test1_morse.wav
+python beep_encoder.py encode -t fsk -m "TEST2" -o test2_fsk.wav
+python beep_encoder.py encode -t ask -m "TEST3" -o test3_ask.wav
+
+# Analyze all signals
+python beep_encoder.py analyze -i test1_morse.wav -o analysis1.json
+python beep_encoder.py analyze -i test2_fsk.wav -o analysis2.json
+python beep_encoder.py analyze -i test3_ask.wav -o analysis3.json
+Troubleshooting
+Common Issues
+
+Missing Dependencies
+bashpip install --upgrade numpy scipy sounddevice
+
+Audio Device Issues
+
+Check available audio devices: python -c "import sounddevice as sd; print(sd.query_devices())"
+Set default device: export SDL_AUDIODRIVER=pulse (Linux)
+
+
+Permission Issues
+bashchmod +x beep_encoder.py
+
+Sample Rate Issues
+
+Use -s 22050 for lower quality but smaller files
+Use -s 44100 (default) for CD quality
+
+
+
+Performance Tips
+
+Use shorter durations (-d 0.05) for faster encoding
+Lower sample rates (-s 22050) for smaller files
+Use lower amplitudes (-a 0.2) to prevent clipping
+
+Advanced Features
+Custom Frequency Analysis
+The tool automatically detects:
+
+DTMF frequency pairs (697-1633 Hz)
+FSK frequency ratios (1.2-2.0x)
+Morse code timing patterns
+Amplitude modulation patterns
+Phase shift patterns
+
+Confidence Scoring
+Decoding results include confidence scores:
+
+80-100%: High confidence, likely correct
+60-79%: Medium confidence, probably correct
+40-59%: Low confidence, may have errors
+0-39%: Very low confidence, likely incorrect
+
+File Formats
+
+Input: WAV files (mono or stereo, various sample rates)
+Output: 16-bit mono WAV files, JSON results
+Compatibility: Standard WAV format, playable in any audio player
