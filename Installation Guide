@@ -1,43 +1,61 @@
 Beep Encoding System - Command Line Tool
-Installation
-1. Install Python Dependencies
-bashpip install numpy scipy sounddevice wave
-2. Save the Script
-Save the Python code as beep_encoder.py and make it executable:
-bashchmod +x beep_encoder.py
-Usage Examples
-Encoding Messages
-Morse Code
-bash# Encode "SOS" as Morse code and save to file
-python beep_encoder.py encode -t morse -m "SOS" -o sos_morse.wav
+# Installation Guide (Command-Line Tool)
 
-# Encode with custom parameters and play
-python beep_encoder.py encode -t morse -m "HELLO WORLD" -f 1000 -d 0.15 -a 0.5 -o hello.wav -p
-DTMF (Phone Tones)
-bash# Encode phone number
-python beep_encoder.py encode -t dtmf -m "1234567890" -o phone.wav -p
+This guide explains how to set up and use the command-line tool `beep_encoder.py` from the Beep Encoding Project.
 
-# Custom duration for DTMF tones
-python beep_encoder.py encode -t dtmf -m "911" -d 0.3 -o emergency.wav
-FSK (Frequency Shift Keying)
-bash# Encode text using FSK
-python beep_encoder.py encode -t fsk -m "TEST" -f 800 -d 0.1 -o fsk_test.wav
-ASK (Amplitude Shift Keying)
-bash# Encode with amplitude modulation
-python beep_encoder.py encode -t ask -m "DATA" -f 1200 -o ask_data.wav -p
-PSK (Phase Shift Keying)
-bash# Encode with phase shifts
-python beep_encoder.py encode -t psk -m "SIGNAL" -f 1000 -d 0.08 -o psk_signal.wav
-Manchester Encoding
-bash# Encode using Manchester encoding
-python beep_encoder.py encode -t manchester -m "BITS" -f 900 -o manchester.wav -p
-Decoding Audio Files
-Decode from File
-bash# Decode any supported encoding from file
-python beep_encoder.py decode -i encoded_message.wav -o decode_results.json
+## Prerequisites
 
-# Decode with custom bit duration
-python beep_encoder.py decode -i fsk_message.wav -d 0.1 -o fsk_results.json
+- **Python 3.7 or higher** must be installed on your system.
+- **pip** (Python package manager) should be available.
+- (Optional) It is recommended to use a virtual environment.
+
+## Installation Steps
+
+1. **Clone the Repository**
+
+   Open your terminal or command prompt and run:
+   ```bash
+   git clone https://github.com/C0dEbReAkEr-glitch/Beep-Encoding.git
+   cd "Beep Encoding"
+   ```
+
+2. **(Optional) Create and Activate a Virtual Environment**
+
+   On Windows:
+   ```bash
+   python -m venv venv
+   .\venv\Scripts\activate
+   ```
+   On macOS/Linux:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install Required Python Packages**
+
+   Run:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   If `requirements.txt` is not present, install the main dependencies manually:
+   ```bash
+   pip install numpy scipy
+   ```
+
+4. **Usage**
+
+   To use the command-line tool, run:
+   ```bash
+   python beep_encoder.py --help
+   ```
+   This will display available options and usage instructions for encoding and decoding messages.
+
+---
+
+**Note:**
+- This installation guide is specifically for the command-line tool (`beep_encoder.py`).
+- For the Streamlit-based tool (`ml.py`), refer to the main README for additional setup instructions.
 Decode from Live Recording
 bash# Record for 10 seconds and decode
 python beep_encoder.py decode -r 10 -o live_decode.json
