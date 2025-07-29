@@ -1,0 +1,7 @@
+numpy>=1.22
+scipy>=1.8
+sounddevice>=0.4.5
+# wave is part of the Python standard library, no need to install
+streamlit>=1.10
+plotly>=5.8
+scikit-learn>=1.1
